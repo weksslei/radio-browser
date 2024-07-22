@@ -1,1 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #333;
+    color: #fff;
+}
+
+.sidebar {
+    height: 100vh;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    font-size: 1.1rem;
+}
+
+.list-group-item {
+    background-color: #444;
+    border: none;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #555;
+}
+
+
+.sidebar .col-1 > a.nav-link.text-white {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 7rem;
+}
+
+
+@media (max-width: 767.98px) {
+    .mobile-hide {
+            display: none;
+    }
+
+    .sidebar {
+        position: fixed;
+        width: 100%;
+        top: 5rem;
+        left: 0;
+        z-index: 1000;
+    }
+}
