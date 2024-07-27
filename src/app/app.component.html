@@ -5,17 +5,39 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <h1 class="h3">Radio Browser</h1>
-    <div>
-      <input type="text" class="form-control d-inline-block w-auto" placeholder="Search stations">
-    </div>
+    <div class="search-radio position-relative">
+      <input type="text" class="form-control" placeholder="Search stations" [(ngModel)]="searchQuery" (keyup.enter)="searchStations()">
+      <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3"></i>
+    </div>    
   </div>
   <div class="row">
     <!-- Sidebar -->
     <div class="mobile-hide col-md-3 bg-dark text-white sidebar">
-      <input type="text" class="form-control mb-3" placeholder="Search here">
-      <ul class="nav flex-column">
-        <li class="nav-item" *ngFor="let category of categories">
-          <a class="nav-link text-white">{{ category }}</a>
+      <!-- Radio Player -->
+      <div class="player-wrapper">
+        <app-radio-player *ngIf="selectedStation" [station]="selectedStation"></app-radio-player>
+      </div>
+      <div class="search-favorite position-relative">
+        <input type="text" class="form-control mb-3" placeholder="Search here" [(ngModel)]="searchQuery" (keyup.enter)="searchStations()">
+        <i class="fa-solid fa-magnifying-glass position-absolute top-50 end-0 translate-middle-y me-3"></i>
+      </div>
+      <!-- <div class="add-category mb-3">
+        <input *ngIf="isAddCategoryVisible" type="text" class="form-control" placeholder="New Category" [(ngModel)]="newCategory">
+        <button   class="btn btn-primary mt-2" (click)="addCategory()">Add Category</button>
+      </div> -->
+      <button class="btn btn-primary mb-3 col-12" (click)="toggleAddCategory()">Create a Category</button>
+      <div class="add-category mb-3" *ngIf="isAddCategoryVisible">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="New Category" [(ngModel)]="newCategory">
+          <button class="btn btn-primary" (click)="addCategory()">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+      </div>      
+      <h5>FAVORITE RADIOS</h5>
+      <ul class="nav flex-column fav-radios">
+        <li class="nav-item" *ngFor="let category of categories | filter:searchQuery">
+          <a class="nav-link text-white" (click)="filterStationsByCategory(category)">{{ category }}</a>
         </li>
       </ul>
     </div>
@@ -29,7 +51,7 @@
 
       <!-- Favorite Radios -->
       <div class="mt-3">
-        <h5>FAVORITE RADIOS</h5>
+        <h5>RADIOS</h5>
         <div class="list-group">
           <div class="list-group-item" *ngFor="let station of stations" (click)="onStationSelected(station)">
             <h6 class="mb-1">{{ station.name }}</h6>
@@ -37,9 +59,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Radio Player -->
-      <app-radio-player *ngIf="selectedStation" [station]="selectedStation"></app-radio-player>
     </div>
   </div>
 </div>

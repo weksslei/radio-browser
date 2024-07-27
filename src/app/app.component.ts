@@ -1,5 +1,5 @@
 import { Component, ElementRef, Renderer2, OnInit } from '@angular/core';
-import { RadioService } from './radio.service'; // Certifique-se de importar o serviço de rádio
+import { RadioService } from './radio.service'
 
 @Component({
   selector: 'app-root',
@@ -13,19 +13,57 @@ export class AppComponent implements OnInit {
     'Bossa Nova Brasil', 'Gaúcha', 'Sertanejo Brasil', 'Rádio Jovem Pan', 'Novo Tempo'
   ];
   stations: any[] = [];
+  searchQuery: string = '';
+  newCategory: string = '';
+  isMenuVisible = false;
+  isAddCategoryVisible: boolean = false;
 
   constructor(private renderer: Renderer2, private element: ElementRef, private radioService: RadioService) {}
 
   ngOnInit() {
+    this.getStations();
+  }
+
+  getStations() {
     this.radioService.getStations().subscribe(data => {
       this.stations = data;
     });
   }
+  getStationsBrazil() {
+    this.radioService.getStationsBrazil().subscribe(data => {
+      this.stations = data;
+    });
+  }
 
-  isMenuVisible = false;
+  filterStationsByCategory(category: string) {
+    this.radioService.getStationsByCategory(category).subscribe(data => {
+      this.stations = data;
+    });
+  }
 
+  searchStations() {
+    if (this.searchQuery.trim()) {
+      this.radioService.searchStations(this.searchQuery.trim()).subscribe(data => {
+        this.stations = data;
+      });
+    } else {
+      this.getStations();
+    }
+  }
+
+  addCategory() {
+    if (this.newCategory.trim() && !this.categories.includes(this.newCategory)) {
+      this.categories.push(this.newCategory.trim());
+      this.newCategory = '';
+    }
+  }
+  
   onStationSelected(station: any) {
     this.selectedStation = station;
+  }
+
+  toggleAddCategory() {
+    this.isAddCategoryVisible = !this.isAddCategoryVisible;
   }
 
   toggleMenu() {
@@ -53,4 +91,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-``

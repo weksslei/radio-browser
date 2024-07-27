@@ -6,15 +6,19 @@ import { AppComponent } from './app.component';
 import { RadioListComponent } from './radio-list/radio-list.component';
 import { RadioPlayerComponent } from './radio-player/radio-player.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from './filter-pipe/filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     RadioListComponent,
-    RadioPlayerComponent
+    RadioPlayerComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule
   ],
